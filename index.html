@@ -2,48 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HARSHUU – Food Delivery</title>
+  <title>HARSHUU – Order Food Online</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Main stylesheet -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <!-- ================= HEADER ================= -->
-  <header class="header">
-    <div class="header-top">
-      <div class="logo">🍽 HARSHUU</div>
-      <div class="location">📍 Delivering in your city</div>
-    </div>
-
-    <div class="search-box">
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search for restaurants..."
-      />
-    </div>
+  <!-- SEARCH BAR -->
+  <header class="top-search">
+    <input id="searchInput" type="text" placeholder='Search "chicken"' />
+    <span class="icon">🎤</span>
   </header>
 
-  <!-- ================= RESTAURANT LIST ================= -->
-  <main class="container">
-    <div
-      class="restaurant-grid"
-      id="restaurants"
-    >
-      Loading restaurants...
-    </div>
-  </main>
+  <!-- CATEGORY SCROLL -->
+  <section class="categories">
+    <div class="cat active">All</div>
+    <div class="cat">Biryani</div>
+    <div class="cat">Pizza</div>
+    <div class="cat">Chicken</div>
+    <div class="cat">Veg</div>
+  </section>
 
-  <!-- ================= FOOTER (OPTIONAL) ================= -->
-  <footer class="footer">
-    <p>© 2025 HARSHUU • Food Delivery</p>
-  </footer>
+  <!-- FILTERS -->
+  <section class="filters">
+    <button>Filters</button>
+    <button>Near & Fast</button>
+    <button>New to you</button>
+    <button>Under ₹200</button>
+  </section>
 
-  <!-- ================= SCRIPTS ================= -->
+  <!-- RESTAURANT LIST -->
+  <section class="restaurant-section">
+    <h3>Recommended for you</h3>
+    <div id="restaurantList" class="restaurant-grid"></div>
+  </section>
+
   <script src="js/api.js"></script>
-  <script src="js/restaurants.js"></script>
-
+  <script src="js/home.js"></script>
 </body>
 </html>
