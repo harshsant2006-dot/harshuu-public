@@ -1,39 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>HARSHUU – Cart</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <header class="cart-header">
-    <h2>Your Cart</h2>
-  </header>
+  <!-- ================= CART ITEMS ================= -->
+  <div class="cart-items" id="cartItems">
+    <!-- JS will render items -->
+  </div>
 
-  <!-- CART ITEMS -->
-  <section id="cartItems" class="cart-items"></section>
-
-  <!-- BILL SUMMARY -->
-  <section class="bill-box">
-    <div><span>Food Total</span><span id="foodTotal">₹0</span></div>
-    <div><span>Platform Fee</span><span id="platformFee">₹0</span></div>
-    <div><span>Handling Charge</span><span id="handlingCharge">₹0</span></div>
-    <div><span>Delivery Charge</span><span id="deliveryCharge">₹0</span></div>
+  <!-- ================= BILL SUMMARY ================= -->
+  <div class="bill-box">
+    <div><span>Item Total</span><span id="itemTotal">₹0</span></div>
     <div><span>GST</span><span id="gstAmount">₹0</span></div>
-    <hr>
-    <div class="grand"><span>Grand Total</span><span id="grandTotal">₹0</span></div>
-  </section>
+    <div><span>Delivery</span><span id="deliveryCharge">₹0</span></div>
+    <div><span>Platform Fee</span><span id="platformFee">₹0</span></div>
+    <hr style="border:0;border-top:1px solid #333;margin:10px 0">
+    <div class="grand"><strong>Total</strong><strong id="grandTotal">₹0</strong></div>
+  </div>
 
-  <!-- CUSTOMER INFO -->
-  <section class="customer-box">
+  <!-- ================= CUSTOMER DETAILS ================= -->
+  <div class="customer-box">
     <input id="custName" placeholder="Your Name">
-    <input id="custPhone" placeholder="Mobile Number">
+    <input id="custPhone" placeholder="Phone Number">
     <input id="custAddress" placeholder="Delivery Address">
-  </section>
+  </div>
 
-  <!-- PLACE ORDER -->
+  <!-- ================= PLACE ORDER ================= -->
   <button class="place-order" onclick="placeOrder()">
     Place Order via WhatsApp
   </button>
