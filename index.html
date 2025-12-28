@@ -12,35 +12,39 @@
 
   <!-- ================= SEARCH BAR ================= -->
   <div class="search-bar">
-    <input id="searchInput" type="text" placeholder='Search "chicken"'>
+    <input
+      id="searchInput"
+      type="text"
+      placeholder='Search "chicken"'
+    >
     <span class="icon">🎤</span>
   </div>
 
-  <!-- ================= CATEGORIES ================= -->
+  <!-- ================= CATEGORY SLIDER ================= -->
   <div class="categories">
     <div class="category">
-      <img src="https://i.imgur.com/8Km9tLL.jpg">
+      <img src="images/all.jpg" alt="All">
       <p>All</p>
     </div>
     <div class="category">
-      <img src="https://i.imgur.com/3ZQ3Z6O.jpg">
+      <img src="images/biryani.jpg" alt="Biryani">
       <p>Biryani</p>
     </div>
     <div class="category">
-      <img src="https://i.imgur.com/MT7QpYB.jpg">
+      <img src="images/pizza.jpg" alt="Pizza">
       <p>Pizza</p>
     </div>
     <div class="category">
-      <img src="https://i.imgur.com/f1QH8rD.jpg">
+      <img src="images/chicken.jpg" alt="Chicken">
       <p>Chicken</p>
     </div>
     <div class="category">
-      <img src="https://i.imgur.com/7bKQe1J.jpg">
+      <img src="images/veg.jpg" alt="Veg">
       <p>Veg</p>
     </div>
   </div>
 
-  <!-- ================= FILTERS ================= -->
+  <!-- ================= FILTER CHIPS ================= -->
   <div class="filters">
     <div class="filter-chip active">Filters</div>
     <div class="filter-chip">Near & Fast</div>
@@ -53,7 +57,7 @@
 
   <!-- ================= RESTAURANT GRID ================= -->
   <div id="restaurantList" class="restaurant-grid">
-    <!-- JS will inject restaurant cards here -->
+    <!-- JS (restaurants.js) इथे cards inject करेल -->
   </div>
 
   <!-- ================= FLOATING CART BAR ================= -->
@@ -61,7 +65,9 @@
     <div>
       <strong id="cartCount">1 item</strong>
     </div>
-    <button onclick="location.href='cart.html'">View Cart</button>
+    <button onclick="location.href='cart.html'">
+      View Cart
+    </button>
   </div>
 
   <!-- ================= JS FILES ================= -->
