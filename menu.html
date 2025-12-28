@@ -1,19 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Menu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <title>HARSHUU – Menu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-<img id="banner" class="banner">
+  <!-- RESTAURANT HEADER -->
+  <header class="menu-header">
+    <img id="restaurantImage" />
+    <div class="menu-header-info">
+      <h2 id="restaurantName">Restaurant</h2>
+      <p id="restaurantAddress"></p>
+    </div>
+  </header>
 
-<div class="container" id="menu"></div>
+  <!-- DISH LIST -->
+  <section class="dish-section">
+    <h3>Menu</h3>
+    <div id="dishList" class="dish-list"></div>
+  </section>
 
-<a href="cart.html" class="sticky-btn">Go to Cart</a>
+  <!-- FLOATING CART BAR -->
+  <div id="cartBar" class="cart-bar hidden" onclick="goToCart()">
+    <span id="cartCount">0 items</span>
+    <button>View Cart</button>
+  </div>
 
-<script src="js/api.js"></script>
-<script src="js/menu.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/menu.js"></script>
 </body>
 </html>
