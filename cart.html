@@ -1,22 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Cart</title>
+  <meta charset="UTF-8">
+  <title>HARSHUU – Cart</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Shared stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-<div class="container">
-  <h2>Your Cart</h2>
-
-  <div id="cart"></div>
-
-  <div class="bill" id="bill"></div>
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">🍽 HARSHUU</div>
+  <div class="location">Secure Checkout</div>
 </div>
 
-<div class="sticky-btn">Checkout</div>
+<!-- MAIN CONTENT -->
+<div class="container">
 
+  <h2>Your Cart</h2>
+
+  <!-- CART ITEMS -->
+  <div id="cart">
+    Loading cart...
+  </div>
+
+  <!-- CUSTOMER DETAILS -->
+  <div class="bill">
+    <h3>Customer Details</h3>
+
+    <input
+      id="custName"
+      placeholder="Your Name"
+      style="width:100%;padding:10px;margin-top:8px;"
+    >
+
+    <input
+      id="custMobile"
+      placeholder="Mobile Number"
+      maxlength="10"
+      style="width:100%;padding:10px;margin-top:8px;"
+    >
+  </div>
+
+  <!-- BILL SUMMARY -->
+  <div class="bill" id="bill">
+    Loading bill...
+  </div>
+
+  <!-- PAYMENT QR -->
+  <div class="bill" id="qrBox" style="text-align:center;">
+    <!-- QR will be injected here -->
+  </div>
+
+</div>
+
+<!-- CHECKOUT CTA -->
+<div class="sticky-btn" onclick="placeOrder()">
+  Place Order
+</div>
+
+<!-- SCRIPTS -->
+<script src="js/api.js"></script>
 <script src="js/cart.js"></script>
+
 </body>
 </html>
