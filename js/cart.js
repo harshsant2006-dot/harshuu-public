@@ -1,77 +1,130 @@
-const cartBox = document.getElementById("cart");
-const billBox = document.getElementById("bill");
-const qrBox = document.getElementById("qrBox");
+const cartItemsEl = document.getElementById("cartItems");
 
-const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+const foodTotalEl = document.getElementById("foodTotal");
+const platformFeeEl = document.getElementById("platformFee");
+const handlingChargeEl = document.getElementById("handlingCharge");
+const deliveryChargeEl = document.getElementById("deliveryCharge");
+const gstAmountEl = document.getElementById("gstAmount");
+const grandTotalEl = document.getElementById("grandTotal");
 
-if (!cart.length) {
-  cartBox.innerHTML = "Cart is empty";
-  throw new Error("Empty cart");
+const custName = document.getElementById("custName");
+const custPhone = document.getElementById("custPhone");
+const custAddress = document.getElementById("custAddress");
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let restaurantId = localStorage.getItem("restaurantId");
+
+/* ===============================
+   LOAD PAYMENT SETTINGS
+================================ */
+let SETTINGS = {
+  PLATFORM_FEE: 0,
+  HANDLING_CHARGE: 0,
+  DELIVERY_PER_KM: 0,
+  GST_PERCENT: 0
+};
+
+async function loadSettings() {
+  const res = await fetch(API_BASE + "/settings");
+  const json = await res.json();
+  if (!json.success) return;
+
+  SETTINGS.PLATFORM_FEE = json.data.platformFee;
+  SETTINGS.HANDLING_CHARGE = json.data.handlingCharge;
+  SETTINGS.DELIVERY_PER_KM = json.data.deliveryFeePerKm;
+  SETTINGS.GST_PERCENT = json.data.gstPercentage;
+
+  renderCart();
 }
 
-let foodTotal = 0;
+/* ===============================
+   RENDER CART
+================================ */
+function renderCart() {
+  let foodTotal = 0;
 
-cart.forEach(i => {
-  foodTotal += i.price;
-  cartBox.innerHTML += `
-    <div class="cart-item">
-      <b>${i.name}</b>
-      <div>₹${i.price}</div>
-    </div>
-  `;
-});
+  cartItemsEl.innerHTML = cart.map(item => {
+    foodTotal += item.price * item.qty;
+    return `
+      <div class="cart-row">
+        <img src="${item.image}">
+        <div>
+          <h4>${item.name}</h4>
+          <p>₹${item.price} × ${item.qty}</p>
+        </div>
+      </div>
+    `;
+  }).join("");
 
-const platformFee = 5;
-const handling = 5;
-const gst = Math.round(foodTotal * 0.05);
-const grandTotal = foodTotal + platformFee + handling + gst;
+  const gst = Number(((foodTotal * SETTINGS.GST_PERCENT) / 100).toFixed(2));
+  const delivery = SETTINGS.DELIVERY_PER_KM;
+  const grand =
+    foodTotal +
+    gst +
+    SETTINGS.PLATFORM_FEE +
+    SETTINGS.HANDLING_CHARGE +
+    delivery;
 
-billBox.innerHTML = `
-  <div class="bill-row"><span>Food Total</span><span>₹${foodTotal}</span></div>
-  <div class="bill-row"><span>Platform Fee</span><span>₹${platformFee}</span></div>
-  <div class="bill-row"><span>Handling</span><span>₹${handling}</span></div>
-  <div class="bill-row"><span>GST</span><span>₹${gst}</span></div>
-  <hr>
-  <div class="bill-row total"><span>Total</span><span>₹${grandTotal}</span></div>
-`;
+  foodTotalEl.innerText = "₹" + foodTotal;
+  platformFeeEl.innerText = "₹" + SETTINGS.PLATFORM_FEE;
+  handlingChargeEl.innerText = "₹" + SETTINGS.HANDLING_CHARGE;
+  deliveryChargeEl.innerText = "₹" + delivery;
+  gstAmountEl.innerText = "₹" + gst;
+  grandTotalEl.innerText = "₹" + grand;
+}
 
+/* ===============================
+   PLACE ORDER
+================================ */
 async function placeOrder() {
-  const name = document.getElementById("custName").value.trim();
-  const mobile = document.getElementById("custMobile").value.trim();
-
-  if (!name || !mobile) {
-    alert("Enter name & mobile");
+  if (!custName.value || !custPhone.value || !custAddress.value) {
+    alert("Please fill all customer details");
     return;
   }
 
-  const orderPayload = {
-    restaurantId: cart[0].restaurantId || cart[0].rid,
-    items: cart.map(i => ({
-      dishId: i.id,
-      quantity: 1
-    })),
+  const items = cart.map(i => ({
+    dishId: i.id,
+    quantity: i.qty
+  }));
+
+  const payload = {
+    restaurantId,
+    items,
     customer: {
-      name,
-      mobile
-    }
+      name: custName.value,
+      phone: custPhone.value,
+      address: custAddress.value
+    },
+    distanceKm: 1
   };
 
-  const orderRes = await apiPost("/orders", orderPayload);
+  const res = await fetch(API_BASE + "/orders", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
 
-  if (!orderRes.success) {
-    alert("Order failed");
+  const json = await res.json();
+  if (!json.success) {
+    alert(json.message || "Order failed");
     return;
   }
 
-  // Load Payment QR
-  const qrRes = await apiGet("/settings/qr");
+  // ===============================
+  // WHATSAPP MESSAGE
+  // ===============================
+  let msg = `*HARSHUU ORDER*\n\n`;
+  cart.forEach(i => {
+    msg += `${i.name} × ${i.qty} = ₹${i.price * i.qty}\n`;
+  });
+  msg += `\n*Total Payable: ${grandTotalEl.innerText}*\n`;
+  msg += `\nName: ${custName.value}\nPhone: ${custPhone.value}\nAddress: ${custAddress.value}`;
 
-  qrBox.innerHTML = `
-    <h3>Scan & Pay</h3>
-    <img src="${qrRes.data.upiQrImage}" style="width:200px">
-    <p>Amount: ₹${grandTotal}</p>
-    <p>Order ID: ${orderRes.data.orderId}</p>
-  `;
+  window.location.href =
+    `https://wa.me/8390454553?text=` + encodeURIComponent(msg);
 
   localStorage.removeItem("cart");
 }
+
+/* INIT */
+loadSettings();
