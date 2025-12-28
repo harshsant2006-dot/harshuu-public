@@ -1,90 +1,100 @@
-const cartItemsEl = document.getElementById("cartItems");
+// ===============================
+// HARSHUU – CART JS
+// ===============================
 
-const foodTotalEl = document.getElementById("foodTotal");
+const cartItemsDiv = document.getElementById("cartItems");
+
+const itemTotalEl = document.getElementById("itemTotal");
+const gstEl = document.getElementById("gstAmount");
+const deliveryEl = document.getElementById("deliveryCharge");
 const platformFeeEl = document.getElementById("platformFee");
-const handlingChargeEl = document.getElementById("handlingCharge");
-const deliveryChargeEl = document.getElementById("deliveryCharge");
-const gstAmountEl = document.getElementById("gstAmount");
 const grandTotalEl = document.getElementById("grandTotal");
 
 const custName = document.getElementById("custName");
 const custPhone = document.getElementById("custPhone");
 const custAddress = document.getElementById("custAddress");
 
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let restaurantId = localStorage.getItem("restaurantId");
+const restaurantId = localStorage.getItem("harshuu_restaurant_id");
 
-/* ===============================
-   LOAD PAYMENT SETTINGS
-================================ */
-let SETTINGS = {
-  PLATFORM_FEE: 0,
-  HANDLING_CHARGE: 0,
-  DELIVERY_PER_KM: 0,
-  GST_PERCENT: 0
-};
+const GST_PERCENT = 5;
+const DELIVERY_CHARGE = 30;
+const PLATFORM_FEE = 10;
 
-async function loadSettings() {
-  const res = await fetch(API_BASE + "/settings");
-  const json = await res.json();
-  if (!json.success) return;
+// ===============================
+// LOAD CART
+// ===============================
+document.addEventListener("DOMContentLoaded", loadCart);
 
-  SETTINGS.PLATFORM_FEE = json.data.platformFee;
-  SETTINGS.HANDLING_CHARGE = json.data.handlingCharge;
-  SETTINGS.DELIVERY_PER_KM = json.data.deliveryFeePerKm;
-  SETTINGS.GST_PERCENT = json.data.gstPercentage;
-
-  renderCart();
+function getCart() {
+  return JSON.parse(localStorage.getItem("harshuu_cart") || "[]");
 }
 
-/* ===============================
-   RENDER CART
-================================ */
-function renderCart() {
-  let foodTotal = 0;
+function saveCart(cart) {
+  localStorage.setItem("harshuu_cart", JSON.stringify(cart));
+  loadCart();
+}
 
-  cartItemsEl.innerHTML = cart.map(item => {
-    foodTotal += item.price * item.qty;
-    return `
-      <div class="cart-row">
-        <img src="${item.image}">
-        <div>
-          <h4>${item.name}</h4>
-          <p>₹${item.price} × ${item.qty}</p>
+// ===============================
+// RENDER CART
+// ===============================
+function loadCart() {
+  const cart = getCart();
+
+  if (!cart.length) {
+    cartItemsDiv.innerHTML =
+      "<p style='padding:16px;color:#aaa'>Cart is empty</p>";
+    return;
+  }
+
+  let itemTotal = 0;
+
+  cartItemsDiv.innerHTML = cart
+    .map(item => {
+      const total = item.price * item.quantity;
+      itemTotal += total;
+
+      return `
+        <div class="cart-row">
+          <img src="${item.image}">
+          <div>
+            <h4>${item.name}</h4>
+            <p>₹${item.price} × ${item.quantity}</p>
+          </div>
         </div>
-      </div>
-    `;
-  }).join("");
+      `;
+    })
+    .join("");
 
-  const gst = Number(((foodTotal * SETTINGS.GST_PERCENT) / 100).toFixed(2));
-  const delivery = SETTINGS.DELIVERY_PER_KM;
+  const gst = +(itemTotal * GST_PERCENT / 100).toFixed(2);
   const grand =
-    foodTotal +
-    gst +
-    SETTINGS.PLATFORM_FEE +
-    SETTINGS.HANDLING_CHARGE +
-    delivery;
+    itemTotal + gst + DELIVERY_CHARGE + PLATFORM_FEE;
 
-  foodTotalEl.innerText = "₹" + foodTotal;
-  platformFeeEl.innerText = "₹" + SETTINGS.PLATFORM_FEE;
-  handlingChargeEl.innerText = "₹" + SETTINGS.HANDLING_CHARGE;
-  deliveryChargeEl.innerText = "₹" + delivery;
-  gstAmountEl.innerText = "₹" + gst;
-  grandTotalEl.innerText = "₹" + grand;
+  itemTotalEl.innerText = `₹${itemTotal}`;
+  gstEl.innerText = `₹${gst}`;
+  deliveryEl.innerText = `₹${DELIVERY_CHARGE}`;
+  platformFeeEl.innerText = `₹${PLATFORM_FEE}`;
+  grandTotalEl.innerText = `₹${grand}`;
 }
 
-/* ===============================
-   PLACE ORDER
-================================ */
+// ===============================
+// PLACE ORDER
+// ===============================
 async function placeOrder() {
+  const cart = getCart();
+
+  if (!cart.length) {
+    alert("Cart empty");
+    return;
+  }
+
   if (!custName.value || !custPhone.value || !custAddress.value) {
-    alert("Please fill all customer details");
+    alert("Please fill all details");
     return;
   }
 
   const items = cart.map(i => ({
-    dishId: i.id,
-    quantity: i.qty
+    dishId: i.dishId,
+    quantity: i.quantity
   }));
 
   const payload = {
@@ -95,36 +105,49 @@ async function placeOrder() {
       phone: custPhone.value,
       address: custAddress.value
     },
-    distanceKm: 1
+    distanceKm: 2
   };
 
-  const res = await fetch(API_BASE + "/orders", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  });
+  try {
+    const res = await fetch(API_BASE + "/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
 
-  const json = await res.json();
-  if (!json.success) {
-    alert(json.message || "Order failed");
-    return;
+    const json = await res.json();
+
+    if (!json.success) {
+      alert(json.message || "Order failed");
+      return;
+    }
+
+    sendWhatsAppMessage(json.data.invoice.grandTotal);
+
+    localStorage.removeItem("harshuu_cart");
+    alert("Order placed successfully");
+    window.location.href = "index.html";
+
+  } catch (e) {
+    console.error(e);
+    alert("Server error");
   }
-
-  // ===============================
-  // WHATSAPP MESSAGE
-  // ===============================
-  let msg = `*HARSHUU ORDER*\n\n`;
-  cart.forEach(i => {
-    msg += `${i.name} × ${i.qty} = ₹${i.price * i.qty}\n`;
-  });
-  msg += `\n*Total Payable: ${grandTotalEl.innerText}*\n`;
-  msg += `\nName: ${custName.value}\nPhone: ${custPhone.value}\nAddress: ${custAddress.value}`;
-
-  window.location.href =
-    `https://wa.me/8390454553?text=` + encodeURIComponent(msg);
-
-  localStorage.removeItem("cart");
 }
 
-/* INIT */
-loadSettings();
+// ===============================
+// WHATSAPP MESSAGE
+// ===============================
+function sendWhatsAppMessage(total) {
+  const text =
+`HARSHUU ORDER
+Name: ${custName.value}
+Phone: ${custPhone.value}
+Address: ${custAddress.value}
+Total Amount: ₹${total}`;
+
+  const url =
+    "https://wa.me/8390454553?text=" +
+    encodeURIComponent(text);
+
+  window.open(url, "_blank");
+}
