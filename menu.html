@@ -1,35 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>HARSHUU – Menu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- RESTAURANT HEADER -->
-  <header class="menu-header">
-    <img id="restaurantImage" />
-    <div class="menu-header-info">
-      <h2 id="restaurantName">Restaurant</h2>
-      <p id="restaurantAddress"></p>
+  <!-- ================= RESTAURANT HEADER ================= -->
+  <div class="restaurant-header">
+    <img id="restaurantImage" src="" alt="Restaurant">
+    <div class="restaurant-header-info">
+      <h2 id="restaurantName">Restaurant Name</h2>
+      <p>⭐ 4.1 • 25–30 mins</p>
     </div>
-  </header>
-
-  <!-- DISH LIST -->
-  <section class="dish-section">
-    <h3>Menu</h3>
-    <div id="dishList" class="dish-list"></div>
-  </section>
-
-  <!-- FLOATING CART BAR -->
-  <div id="cartBar" class="cart-bar hidden" onclick="goToCart()">
-    <span id="cartCount">0 items</span>
-    <button>View Cart</button>
   </div>
 
+  <!-- ================= DISH LIST ================= -->
+  <div id="dishList" class="menu-list">
+    <!-- dishes will load here -->
+  </div>
+
+  <!-- ================= FLOATING CART BAR ================= -->
+  <div id="cartBar" class="cart-bar" style="display:none">
+    <div>
+      <strong id="cartCount">1 item</strong>
+    </div>
+    <button onclick="location.href='cart.html'">
+      View Cart
+    </button>
+  </div>
+
+  <!-- ================= JS ================= -->
   <script src="js/api.js"></script>
   <script src="js/menu.js"></script>
+
 </body>
 </html>
