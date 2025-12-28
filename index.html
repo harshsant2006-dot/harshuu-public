@@ -1,43 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>HARSHUU – Order Food Online</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- MAIN THEME CSS -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- SEARCH BAR -->
-  <header class="top-search">
-    <input id="searchInput" type="text" placeholder='Search "chicken"' />
+  <!-- ================= SEARCH BAR ================= -->
+  <div class="search-bar">
+    <input id="searchInput" type="text" placeholder='Search "chicken"'>
     <span class="icon">🎤</span>
-  </header>
+  </div>
 
-  <!-- CATEGORY SCROLL -->
-  <section class="categories">
-    <div class="cat active">All</div>
-    <div class="cat">Biryani</div>
-    <div class="cat">Pizza</div>
-    <div class="cat">Chicken</div>
-    <div class="cat">Veg</div>
-  </section>
+  <!-- ================= CATEGORIES ================= -->
+  <div class="categories">
+    <div class="category">
+      <img src="https://i.imgur.com/8Km9tLL.jpg">
+      <p>All</p>
+    </div>
+    <div class="category">
+      <img src="https://i.imgur.com/3ZQ3Z6O.jpg">
+      <p>Biryani</p>
+    </div>
+    <div class="category">
+      <img src="https://i.imgur.com/MT7QpYB.jpg">
+      <p>Pizza</p>
+    </div>
+    <div class="category">
+      <img src="https://i.imgur.com/f1QH8rD.jpg">
+      <p>Chicken</p>
+    </div>
+    <div class="category">
+      <img src="https://i.imgur.com/7bKQe1J.jpg">
+      <p>Veg</p>
+    </div>
+  </div>
 
-  <!-- FILTERS -->
-  <section class="filters">
-    <button>Filters</button>
-    <button>Near & Fast</button>
-    <button>New to you</button>
-    <button>Under ₹200</button>
-  </section>
+  <!-- ================= FILTERS ================= -->
+  <div class="filters">
+    <div class="filter-chip active">Filters</div>
+    <div class="filter-chip">Near & Fast</div>
+    <div class="filter-chip">New to you</div>
+    <div class="filter-chip">Under ₹200</div>
+  </div>
 
-  <!-- RESTAURANT LIST -->
-  <section class="restaurant-section">
-    <h3>Recommended for you</h3>
-    <div id="restaurantList" class="restaurant-grid"></div>
-  </section>
+  <!-- ================= RECOMMENDED ================= -->
+  <div class="section-title">RECOMMENDED FOR YOU</div>
 
+  <!-- ================= RESTAURANT GRID ================= -->
+  <div id="restaurantList" class="restaurant-grid">
+    <!-- JS will inject restaurant cards here -->
+  </div>
+
+  <!-- ================= FLOATING CART BAR ================= -->
+  <div id="cartBar" class="cart-bar" style="display:none">
+    <div>
+      <strong id="cartCount">1 item</strong>
+    </div>
+    <button onclick="location.href='cart.html'">View Cart</button>
+  </div>
+
+  <!-- ================= JS FILES ================= -->
   <script src="js/api.js"></script>
-  <script src="js/home.js"></script>
+  <script src="js/restaurants.js"></script>
+
 </body>
 </html>
