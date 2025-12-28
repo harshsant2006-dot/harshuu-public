@@ -1,70 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>HARSHUU – Cart</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Shared stylesheet -->
-  <link rel="stylesheet" href="css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
-
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="logo">🍽 HARSHUU</div>
-  <div class="location">Secure Checkout</div>
-</div>
-
-<!-- MAIN CONTENT -->
-<div class="container">
-
-  <h2>Your Cart</h2>
+  <header class="cart-header">
+    <h2>Your Cart</h2>
+  </header>
 
   <!-- CART ITEMS -->
-  <div id="cart">
-    Loading cart...
-  </div>
-
-  <!-- CUSTOMER DETAILS -->
-  <div class="bill">
-    <h3>Customer Details</h3>
-
-    <input
-      id="custName"
-      placeholder="Your Name"
-      style="width:100%;padding:10px;margin-top:8px;"
-    >
-
-    <input
-      id="custMobile"
-      placeholder="Mobile Number"
-      maxlength="10"
-      style="width:100%;padding:10px;margin-top:8px;"
-    >
-  </div>
+  <section id="cartItems" class="cart-items"></section>
 
   <!-- BILL SUMMARY -->
-  <div class="bill" id="bill">
-    Loading bill...
-  </div>
+  <section class="bill-box">
+    <div><span>Food Total</span><span id="foodTotal">₹0</span></div>
+    <div><span>Platform Fee</span><span id="platformFee">₹0</span></div>
+    <div><span>Handling Charge</span><span id="handlingCharge">₹0</span></div>
+    <div><span>Delivery Charge</span><span id="deliveryCharge">₹0</span></div>
+    <div><span>GST</span><span id="gstAmount">₹0</span></div>
+    <hr>
+    <div class="grand"><span>Grand Total</span><span id="grandTotal">₹0</span></div>
+  </section>
 
-  <!-- PAYMENT QR -->
-  <div class="bill" id="qrBox" style="text-align:center;">
-    <!-- QR will be injected here -->
-  </div>
+  <!-- CUSTOMER INFO -->
+  <section class="customer-box">
+    <input id="custName" placeholder="Your Name">
+    <input id="custPhone" placeholder="Mobile Number">
+    <input id="custAddress" placeholder="Delivery Address">
+  </section>
 
-</div>
+  <!-- PLACE ORDER -->
+  <button class="place-order" onclick="placeOrder()">
+    Place Order via WhatsApp
+  </button>
 
-<!-- CHECKOUT CTA -->
-<div class="sticky-btn" onclick="placeOrder()">
-  Place Order
-</div>
-
-<!-- SCRIPTS -->
-<script src="js/api.js"></script>
-<script src="js/cart.js"></script>
-
+  <script src="js/api.js"></script>
+  <script src="js/cart.js"></script>
 </body>
 </html>
