@@ -1,25 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
   <title>HARSHUU – Food Delivery</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-<div class="header">
-  <div class="logo">🍽 HARSHUU</div>
-  <div class="location">Delivering in your city</div>
-  <div class="search">
-    <input placeholder="Search restaurants...">
-  </div>
-</div>
+  <!-- ================= HEADER ================= -->
+  <header class="header">
+    <div class="header-top">
+      <div class="logo">🍽 HARSHUU</div>
+      <div class="location">📍 Delivering in your city</div>
+    </div>
 
-<div class="container">
-  <div class="restaurant-grid" id="restaurants"></div>
-</div>
+    <div class="search-box">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search for restaurants..."
+      />
+    </div>
+  </header>
 
-<script src="js/api.js"></script>
-<script src="js/restaurants.js"></script>
+  <!-- ================= RESTAURANT LIST ================= -->
+  <main class="container">
+    <div
+      class="restaurant-grid"
+      id="restaurants"
+    >
+      Loading restaurants...
+    </div>
+  </main>
+
+  <!-- ================= FOOTER (OPTIONAL) ================= -->
+  <footer class="footer">
+    <p>© 2025 HARSHUU • Food Delivery</p>
+  </footer>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script src="js/api.js"></script>
+  <script src="js/restaurants.js"></script>
+
 </body>
 </html>
